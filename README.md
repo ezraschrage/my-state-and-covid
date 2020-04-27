@@ -15,7 +15,7 @@ In addition, this project will have
 
 
 ## Wireframes
-![Wireframe](https://github.com/ezraschrage/my-state-and-covid/blob/master/Screen%20Shot%202020-04-27%20at%203.47.35%20AM.png)
+![Wireframe](https://github.com/ezraschrage/my-state-and-covid/blob/master/src/images/Screen%20Shot%202020-04-27%20at%203.47.35%20AM.png)
 
 ## Architecture and Technology
 
