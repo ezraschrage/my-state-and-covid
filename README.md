@@ -19,7 +19,7 @@ In addition, this project will have
 
 ## Architecture and Technology
 
-- JavaScript as the base language.
+- JavaScript as the base language.
 - D3.js for visualizing data.
 - Webpack for bundling files together.
 
