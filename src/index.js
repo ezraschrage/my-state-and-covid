@@ -1,4 +1,4 @@
-import "./chart";
+// import "./chart";
 
 // const testObj = {
 //   key1: "hi",
