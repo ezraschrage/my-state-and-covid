@@ -73,7 +73,7 @@ let svg = d3.select("#data").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-document.addEventListener("DOMContentLoaded", () => {
+// document.addEventListener("DOMContentLoaded", () => {
 
 
 
@@ -121,109 +121,109 @@ d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (stateDat
 
     // let pairs = 
     
-    let y = d3.scale.linear()
-        .domain([0, d3.max(data, function (d) {
-            return +d[selection];
-        })])
-        .range([height, 0]);
+    // let y = d3.scale.linear()
+    //     .domain([0, d3.max(data, function (d) {
+    //         return +d[selection];
+    //     })])
+    //     .range([height, 0]);
 
-    let x = d3.scale.ordinal()
-        .domain(data.map(function (d) { return d.State; }))
-        .rangeBands([0, width]);
-
-
-    let xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom");
-
-    let yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("left");
-
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .selectAll("text")
-        .style("font-size", "8px")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", "-.55em")
-        .attr("transform", "rotate(-90)");
+    // let x = d3.scale.ordinal()
+    //     .domain(data.map(function (d) { return d.State; }))
+    //     .rangeBands([0, width]);
 
 
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
+    // let xAxis = d3.svg.axis()
+    //     .scale(x)
+    //     .orient("bottom");
 
-    svg.selectAll("rectangle")
-        .data(data)
-        .enter()
-        .append("rect")
-        .attr("class", "rectangle")
-        .attr("width", width / data.length)
-        .attr("height", function (d) {
-            return height - y(+d[selection]);
-        })
-        .attr("x", function (d, i) {
-            return (width / data.length) * i;
-        })
-        .attr("y", function (d) {
-            return y(+d[selection]);
-        })
-        .append("title")
-        .text(function (d) {
-            return d.State + " : " + d[selection];
-        });
+    // let yAxis = d3.svg.axis()
+    //     .scale(y)
+    //     .orient("left");
 
-    let selector = d3.select("#drop")
-        .append("select")
-        .attr("id", "dropdown")
-        .on("change", function (d) {
-            selection = document.getElementById("dropdown");
+    // svg.append("g")
+    //     .attr("class", "x axis")
+    //     .attr("transform", "translate(0," + height + ")")
+    //     .call(xAxis)
+    //     .selectAll("text")
+    //     .style("font-size", "8px")
+    //     .style("text-anchor", "end")
+    //     .attr("dx", "-.8em")
+    //     .attr("dy", "-.55em")
+    //     .attr("transform", "rotate(-90)");
 
-            y.domain([0, d3.max(data, function (d) {
-                return +d[selection.value];
-            })]);
 
-            yAxis.scale(y);
+    // svg.append("g")
+    //     .attr("class", "y axis")
+    //     .call(yAxis);
 
-            d3.selectAll(".rectangle")
-                .transition()
-                .attr("height", function (d) {
-                    return height - y(+d[selection.value]);
-                })
-                .attr("x", function (d, i) {
-                    return (width / data.length) * i;
-                })
-                .attr("y", function (d) {
-                    return y(+d[selection.value]);
-                })
-                .ease("linear")
-                .select("title")
-                .text(function (d) {
-                    return d.State + " : " + d[selection.value];
-                });
+    // svg.selectAll("rectangle")
+    //     .data(data)
+    //     .enter()
+    //     .append("rect")
+    //     .attr("class", "rectangle")
+    //     .attr("width", width / data.length)
+    //     .attr("height", function (d) {
+    //         return height - y(+d[selection]);
+    //     })
+    //     .attr("x", function (d, i) {
+    //         return (width / data.length) * i;
+    //     })
+    //     .attr("y", function (d) {
+    //         return y(+d[selection]);
+    //     })
+    //     .append("title")
+    //     .text(function (d) {
+    //         return d.State + " : " + d[selection];
+    //     });
 
-            d3.selectAll("g.y.axis")
-                .transition()
-                .call(yAxis);
+    // let selector = d3.select("#drop")
+    //     .append("select")
+    //     .attr("id", "dropdown")
+    //     .on("change", function (d) {
+    //         selection = document.getElementById("dropdown");
 
-        });
+    //         y.domain([0, d3.max(data, function (d) {
+    //             return +d[selection.value];
+    //         })]);
 
-    selector.selectAll("option")
-        .data(elements)
-        .enter().append("option")
-        .attr("value", function (d) {
-            return d;
-        })
-        .text(function (d) {
-            return d;
-        })
+    //         yAxis.scale(y);
+
+    //         d3.selectAll(".rectangle")
+    //             .transition()
+    //             .attr("height", function (d) {
+    //                 return height - y(+d[selection.value]);
+    //             })
+    //             .attr("x", function (d, i) {
+    //                 return (width / data.length) * i;
+    //             })
+    //             .attr("y", function (d) {
+    //                 return y(+d[selection.value]);
+    //             })
+    //             .ease("linear")
+    //             .select("title")
+    //             .text(function (d) {
+    //                 return d.State + " : " + d[selection.value];
+    //             });
+
+    //         d3.selectAll("g.y.axis")
+    //             .transition()
+    //             .call(yAxis);
+
+    //     });
+
+    // selector.selectAll("option")
+    //     .data(elements)
+    //     .enter().append("option")
+    //     .attr("value", function (d) {
+    //         return d;
+    //     })
+    //     .text(function (d) {
+    //         return d;
+    //     })
 }
 
 );
 
 
 
-})
+// })
