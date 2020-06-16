@@ -64,7 +64,7 @@ let stateNameArray = Object.keys(stateNames);
 console.log(stateNameArray)
 
 let margin = { top: 80, right: 180, bottom: 80, left: 180 },
-    width = 960 - margin.left - margin.right,
+    width = 1960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 let svg = d3.select("#data").append("svg")
