@@ -7,44 +7,13 @@
     <link rel="stylesheet" href="./src/styles/_css_reset.css">
     <link rel="stylesheet" href="./src/styles/index.css">
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="./src/index.js" charset="utf-8"></script>
-    <script src="./dist/main.js" charset="utf-8"></script>
-<!--
-
-      <title>Hello Avocado</title>
-    <link rel="icon" href="src/public/favicon.ico" />
-
-    <link rel="stylesheet" href="./dist/main.css">
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Bree+Serif&display=swap" rel="stylesheet">
-    
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-  <link rel="stylesheet" href="assets/stylesheets/_css_reset.css">
-  <link rel="stylesheet" href="assets/stylesheets/application.css">
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <link rel='shortcut icon' type='image/x-icon' href='assets/16S_icon.ico' />
-  <title>16|Segments</title>
-
-
-
--->
-
-
-
-
-
-
+    <!-- <script src="src/index.js" charset="utf-8"></script> -->
+    <!-- <script src="dist/main.js" charset="utf-8"></script> -->
     <title>Document</title>
   </head>
 
   <body>
     
-    <!-- <script src="./dist/main.js"></script> -->
     <div class="page">
       <div class="header">
         <h1>My State and Covid</h1>
@@ -71,7 +40,13 @@
         </div>
         <div class="data-box">
           <div id="data"></div>
-          
+          <script>
+            let svg = d3.select("#data").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+          </script>
         </div>
         <div class="links-box">
             <h3>Links and Attributions</h3>
