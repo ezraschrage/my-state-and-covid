@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="./src/styles/index.css">
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <!-- <script src="src/index.js" charset="utf-8"></script> -->
-    <!-- <script src="dist/main.js" charset="utf-8"></script> -->
+    <script src="dist/main.js" charset="utf-8"></script>
     <title>Document</title>
   </head>
 
@@ -40,13 +40,7 @@
         </div>
         <div class="data-box">
           <div id="data"></div>
-          <script>
-            let svg = d3.select("#data").append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-          </script>
+          
         </div>
         <div class="links-box">
             <h3>Links and Attributions</h3>
