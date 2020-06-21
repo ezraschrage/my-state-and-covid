@@ -61,32 +61,33 @@ const stateNames = {
 }
 
 let stateNameArray = Object.keys(stateNames);
-console.log(stateNameArray)
+// console.log(stateNameArray)
 
 let margin = { top: 80, right: 180, bottom: 80, left: 180 },
-    width = 2960 - margin.left - margin.right,
-    height = 2500 - margin.top - margin.bottom;
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-let svg = d3.select("#data").append("svg")
+let canvas = d3.select("#data-section")
+    .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
 
 
 
 // const states = {};
 const states = [];
-// console.log(states)
+// console.log(data)
 
 
 d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (stateData) {
     for (let i = 0; i < stateData.length; i += 1) {
         const state = stateData[i];
         const name = state.state;
-        // states[`${name}`] = {
+        // data[`${name}`] = {
         states.push( {
             abreviation: name,
             name: stateNames[name],
@@ -103,35 +104,135 @@ d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (stateDat
             recovered: parseInt(state.recovered),
             hospitalized: parseInt(state.hospitalized)
         })
-        // console.log(states)
+        // console.log(data)
     }
 
-    let data = states;
+    
     // filter year
     // let data = data.filter(function (d) { return d.Year == '2012'; });
-    console.log(data)
+    console.log(states)
     // Get every column value
-    let elements = Object.keys(data[0])
+    let elements = Object.keys(states[0])
         .filter(function (d) {
             return ((d != "abreviation") & (d != "name"));
         });
     console.log(elements)
-    // let selection = elements[0];
-    // console.log(selection)
 
-    // let pairs = 
+    // var x = d3.scaleOrdinal()
+    //     .domain(data.map(function (d) { return d.name; }))
+    //     .rangeRoundBands([0, width], 0.1);
+    // In d3 v4
+
+    // It should have been:
+
+    // var x = d3.scaleBand()
+    //     .rangeRound([0, width])
+    //     .padding(0.1);
     
-    // let y = d3.scale.linear()
-    //     .domain([0, d3.max(data, function (d) {
-    //         return +d[selection];
-    //     })])
-    //     .range([height, 0]);
+    let xScale = d3.scaleBand()
+        .rangeRound([0, width])
+        .padding(0.1)
+    // let xScale = d3.scaleOrdinal()
+    //     .domain(elements)
+    //     rangeRoundBands([0, width], 0.1);
 
+    let yScale = d3.scaleLinear()
+        .domain([0, d3.max(states, function(d) {
+            return +d[elements[0]]
+        })])
+        .range([height, 0]);
+
+    let xAxis = d3.svg.axis()
+        .scale(xScale)
+        .orient("bottom");
+
+    canvas.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    let yAxis = d3.svg.axis()
+        .scale(yScale)
+        .orient("left");
+
+    let yAxisHandleForUpdate = canvas.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+
+    yAxisHandleForUpdate.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Value")
+
+    let updateBars = function(data) {
+        yScale.domain( d3.extent(data) );
+        yAxisHandleForUpdate.call(yAxis);
+
+        let bars = canvas.selectAll(".bar").data(data);
+
+        bars.enter()
+            .append("rect")
+                .attr("class", "bar")
+                .attr("x", function(d,i) { return xScale( elements[i] ); })
+                .attr("width", xScale.rangeBand())
+                .attr("y", function(d, i) { return height - yScale(d); });
+
+        bars
+            .transition().duration(250)
+            .attr("y", function(d,i) { return yScale(d); })
+            .attr("height", function(d,i) { return height - yScale(d); });
+
+        bars.exit().remove();
+    };
+
+    let dropdownChange = function() {
+        let newState = d3.select(this).property("value"),
+            newData = states[newState];
+
+        updateBars(newState);
+    };
+
+    let dropdown = d3.select("#data-section")
+        .insert("select", "svg")
+        .on("change", dropdownChange);
+
+    dropdown.selectAll("option")
+        .data(stateNameArray)
+        .enter().append("option")
+        .attr("value", function (d) { return d; })
+        .text(function (d) {
+            return d[0].toUpperCase() + d.slice(1,d.length);
+        });
+
+    let initialData = states[ stateNames[0] ];
+    updateBars(initialData);
+
+    // // let selection = elements[0];
+    // // console.log(selection)
+
+    // // let pairs = 
+    
+    // // let y = d3.scale.linear()
+    // //     .domain([0, d3.max(data, function (d) {
+    // //         return +d[selection];
+    // //     })])
+    // //     .range([height, 0]);
+
+    // // let x = d3.scale.ordinal()
+    // //     .domain(data.map(function (d) { return d.State; }))
+    // //     .rangeBands([0, width]);
+
+    // // Make x scale
     // let x = d3.scale.ordinal()
-    //     .domain(data.map(function (d) { return d.State; }))
-    //     .rangeBands([0, width]);
+    //     .domain(elements)
+    //     .rangeRoundBands([0, width], 0.1);
 
-
+    // // Make y scale, the domain will be defined on bar update
+    // let y = d3.scale.linear()
+    //     .range([height, 0]);
+        
     // let xAxis = d3.svg.axis()
     //     .scale(x)
     //     .orient("bottom");
@@ -226,4 +327,4 @@ d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (stateDat
 
 
 
-// })
+})
