@@ -88,14 +88,43 @@ let y = d3.scaleLinear()
 
 let yAxis = svg.append('g')
 
+    // let findMax = data => {
+    //     let values = Object.values(data)
+    //     // console.log(values)
+    //     let onlyNums = values.map(function (num) {
+    //         // console.log(typeof num === "number")
+    //         if (typeof num !== "number" || isNaN(num)) {
+    //             return 0
+    //         } else {
+    //             return num
+    //         }
+    //     })
+
+
+
 function selectState(selectedState){ 
 
     d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (rawData) {
-        console.log(rawData)
-        let data = Object.keys(rawData[0])
-            .filter(function (d) {
-                return ((d != "abreviation") & (d != "name"));
-            });
+        // console.log(rawData)
+        let stateData = rawData[stateIndex[selectedState]]
+        // console.log(stateData)
+        let data = {}
+        // stateData.forEach(function (d) {
+        for (let [d,value] of Object.entries(stateData)) {
+            if (d === 'positive' || d === 'negative' || d === 'death' || d === 'totalTestResults' ||
+                d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' || 
+                d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
+                d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
+                d === 'hospitalized') {
+                    data[d] = isNaN(parseInt(value)) ? 0 : parseInt(value)
+            }
+        }
+
+        console.log(data)
+
+        x.domain(Object.keys(data))
+        console.log(Object.keys(data))
+
 
         // console.log(data)
 
