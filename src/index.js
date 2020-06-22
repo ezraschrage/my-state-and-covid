@@ -104,31 +104,32 @@ let findMax = data => {
 
 // function selectState(selectedState){ 
 
-    d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (oldData) {
-        for (let i = 0; i < oldData.length; i += 1) {
-            const state = oldData[i];
+    d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (data) {
+        for (let i = 0; i < data.length; i += 1) {
+            const state = data[i];
             const name = state.state;
 
             // data[`${name}`] = {
             data.forEach(function (d) {
                 abreviation: name,
-                name: stateNames[name],
-                positive: isNaN(parseInt(state.positive)) ? 0 : parseInt(state.positive),
-                negative: isNaN(parseInt(state.negative)) ? 0 : parseInt(state.negative),
-                death: isNaN(parseInt(state.death)) ? 0 :  parseInt(state.death),
-                totalTestResults: isNaN(parseInt(state.totalTestResults)) ? 0 : parseInt(state.totalTestResults),
-                hospitalizedCurrently: isNaN(parseInt(state.hospitalizedCurrently)) ? 0 : parseInt(state.hospitalizedCurrently),
-                hospitalizedCumulative: isNaN(parseInt(state.hospitalizedCumulative)) ? 0 : parseInt(state.hospitalizedCumulative),
-                inIcuCurrently: isNaN(parseInt(state.inIcuCurrently)) ? 0 : parseInt(state.inIcuCurrently),
-                inIcuCumulative: isNaN(parseInt(state.inIcuCumulative)) ? 0 : parseInt(state.inIcuCumulative),
-                onVentilatorCurrently: isNaN(parseInt(state.onVentilatorCurrently)) ? 0 : parseInt(state.onVentilatorCurrently),
-                onVentilatorCumulative: isNaN(parseInt(state.onVentilatorCumulative)) ? 0 : parseInt(state.onVentilatorCumulative),
-                recovered: isNaN(parseInt(state.recovered)) ? 0 : parseInt(state.recovered),
-                hospitalized: isNaN(parseInt(state.hospitalized)) ? 0 : parseInt(state.hospitalized)
+                d.name = stateNames[name],
+                d.positive = isNaN(parseInt(state.positive)) ? 0 : parseInt(state.positive),
+                dnegative = isNaN(parseInt(state.negative)) ? 0 : parseInt(state.negative),
+                d.death = isNaN(parseInt(state.death)) ? 0 :  parseInt(state.death),
+                d.totalTestResults = isNaN(parseInt(state.totalTestResults)) ? 0 : parseInt(state.totalTestResults),
+                d.hospitalizedCurrently = isNaN(parseInt(state.hospitalizedCurrently)) ? 0 : parseInt(state.hospitalizedCurrently),
+                d.hospitalizedCumulative = isNaN(parseInt(state.hospitalizedCumulative)) ? 0 : parseInt(state.hospitalizedCumulative),
+                d.inIcuCurrently = isNaN(parseInt(state.inIcuCurrently)) ? 0 : parseInt(state.inIcuCurrently),
+                d.inIcuCumulative = isNaN(parseInt(state.inIcuCumulative)) ? 0 : parseInt(state.inIcuCumulative),
+                d.onVentilatorCurrently = isNaN(parseInt(state.onVentilatorCurrently)) ? 0 : parseInt(state.onVentilatorCurrently),
+                d.onVentilatorCumulative = isNaN(parseInt(state.onVentilatorCumulative)) ? 0 : parseInt(state.onVentilatorCumulative),
+                d.recovered = isNaN(parseInt(state.recovered)) ? 0 : parseInt(state.recovered),
+                d.hospitalized = isNaN(parseInt(state.hospitalized)) ? 0 : parseInt(state.hospitalized)
             })
         }
 
         console.log(data)
+        // console.log(d)
 
         // let categories = Object.keys(data[0])
         // .filter(function (d) {
