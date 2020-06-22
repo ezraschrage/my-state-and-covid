@@ -102,13 +102,14 @@ let findMax = data => {
     return Math.max(...onlyNums)
 }
 
-// function selectState(selectedState){ 
+function selectState(selectedState){ 
 
     d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (data) {
+        // console.log(data)
         for (let i = 0; i < data.length; i += 1) {
             const state = data[i];
             const name = state.state;
-
+            // console.log(data)
             // data[`${name}`] = {
             data.forEach(function (d) {
                 abreviation: name,
@@ -127,25 +128,22 @@ let findMax = data => {
                 d.hospitalized = isNaN(parseInt(state.hospitalized)) ? 0 : parseInt(state.hospitalized)
             })
         }
+        
 
-        console.log(data)
-        // console.log(d)
+        
 
-        // let categories = Object.keys(data[0])
-        // .filter(function (d) {
-        //     return ((d != "abreviation") & (d != "name"));
-        // });
+        
+        let selection = Object.keys(data[37])
+            .filter(key => categories.includes(key))
+            .reduce((obj, key) => {
+                return {
+                    ...obj,
+                    [key]: states[37][key]
+                };
+            }, {});
 
-        // let selection = Object.keys(data[37])
-        //     .filter(key => categories.includes(key))
-        //     .reduce((obj, key) => {
-        //         return {
-        //             ...obj,
-        //             [key]: states[37][key]
-        //         };
-        //     }, {});
-
-    });}
-    
+    });
+}
+    selectState("NY")
    
-)
+})
