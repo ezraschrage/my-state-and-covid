@@ -110,11 +110,16 @@ function selectState(selectedState){
         let data = []
         // stateData.forEach(function (d) {
         for (let [d,v] of Object.entries(stateData)) {
-            if (d === 'positive' || d === 'negative' || d === 'death' || d === 'totalTestResults' ||
+            if (d === 'positive' || d === 'death' ||
                 d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' || 
                 d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
                 d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
                 d === 'hospitalized') {
+            // if (d === 'positive' || d === 'negative' || d === 'death' || d === 'totalTestResults' ||
+            //     d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' || 
+            //     d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
+            //     d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
+            //     d === 'hospitalized') {
                     d = capitalize(d)
                     if (!isNaN(parseInt(v))) {
                     data.push( { category: d, value: +parseInt(v) })
@@ -165,8 +170,21 @@ function selectState(selectedState){
             .attr("height", function (d) { return height - y(d.value)})
             .style("fill", "#69b3a2")
 
+        d3.select("#selectButton")
+            .selectAll("myOptions")
+            .data(Object.keys(stateIndex))
+            .enter()
+            .append("option")
+            .text(function (d)  {return d; })
+            // .property("selected", function (d) { return d === "NY"})
+
+        d3.select("#selectButton").on("change", function(d) {
+            let selectedOption = d3.select(this).property("value")
+            selectState(selectedOption)
+        })
+
     });
 }
-    selectState("NJ")
+    selectState("NY")
    
 })
