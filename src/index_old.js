@@ -1,3 +1,9 @@
+            // if (d === 'positive' || d === 'negative' || d === 'death' || d === 'totalTestResults' ||
+            //     d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' || 
+            //     d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
+            //     d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
+            //     d === 'hospitalized') {
+
 // const stateNames = {
 //     "AL": "Alabama",
 //     "AK": "Alaska",

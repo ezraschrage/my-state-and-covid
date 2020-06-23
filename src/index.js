@@ -72,18 +72,15 @@ let svg = d3.select("#data-section")
     .append("g")
     .attr("transform", `translate(${margin}, ${margin})`);
 
-let x = d3.scaleBand()
-        .range([0, width])
-        .padding(0.5)
+    d3.select("#selectButton")
+        .selectAll("myOptions")
+        .data(Object.keys(stateIndex))
+        .enter()
+        .append("option")
+        .text(function (d) { return d; })
+        .attr("value", function (d) { return d })
+    // .property("selected", function (d) { return d === "NY"})
 
-let xAxis = svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-
-let y = d3.scaleLinear()
-        .range([height, 0])
-        
-
-let yAxis = svg.append('g')
 
 let capitalize = word => {
     let wordArray = word.split('')
@@ -101,67 +98,48 @@ let capitalize = word => {
 }
 
 
-function selectState(selectedState){ 
+
 
     d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (rawData) {
         // console.log(rawData)
-        let stateData = rawData[stateIndex[selectedState]]
-        // console.log(stateData)
+
+
+        let stateData = rawData[stateIndex["NY"]]
+        
         let data = []
-        // stateData.forEach(function (d) {
-        for (let [d,v] of Object.entries(stateData)) {
+        for (let [d, v] of Object.entries(stateData)) {
             if (d === 'positive' || d === 'death' ||
-                d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' || 
+                d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' ||
                 d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
                 d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
                 d === 'hospitalized') {
-            // if (d === 'positive' || d === 'negative' || d === 'death' || d === 'totalTestResults' ||
-            //     d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' || 
-            //     d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
-            //     d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
-            //     d === 'hospitalized') {
-                    d = capitalize(d)
-                    if (!isNaN(parseInt(v))) {
-                    data.push( { category: d, value: +parseInt(v) })
+                d = capitalize(d)
+                if (!isNaN(parseInt(v))) {
+                    data.push({ category: d, value: +parseInt(v) })
                 }
             }
         }
 
-        console.log(data)
+        let x = d3.scaleBand()
+            .range([0, width])
+            .padding(0.5)
 
-        x.domain(data.map(function (d) { return d.category}))
-        // console.log(Object.keys(x))
-        // console.log(x["domain"])
+        let xAxis = svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
 
-        
+        let y = d3.scaleLinear()
+            .range([height, 0])
 
+
+        let yAxis = svg.append('g')
+
+        x.domain(data.map(function (d) { return d.category }))
 
         let maxY = d3.max(data, function (d) { return d.value })
 
-        // console.log(maxY)
-
         y.domain([0, maxY])
 
-  
-            
-
-        // let test1 = data = (d) => {
-        //     console.log(d)
-        // }
-        // console.log(Object.entries(x))
-        // console.log(Object.entries(y))
         console.log(x.bandwidth())
-
-        svg.selectAll(".bar")
-            .data(data)
-            .enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", function (d) { return x(d.category)})
-            .attr("y", function (d) { return y(d.value)})
-            .attr("width", x.bandwidth())
-            .attr("height", function (d) { return height - y(d.value)})
-            .style("fill", "#69b3a2")
-
 
         yAxis.transition()
             .duration(1000)
@@ -176,21 +154,103 @@ function selectState(selectedState){
             .style("text-anchor", "end")
             .attr('x', -8)
 
-        d3.select("#selectButton")
-            .selectAll("myOptions")
-            .data(Object.keys(stateIndex))
-            .enter()
-            .append("option")
-            .text(function (d)  {return d; })
-            // .property("selected", function (d) { return d === "NY"})
+        svg.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .transition()
+            .duration(1000)
+            .attr("x", function (d) { return x(d.category) })
+            .attr("y", function (d) { return y(d.value) })
+            .attr("width", x.bandwidth())
+            .attr("height", function (d) { return height - y(d.value) })
+            .style("fill", "#69b3a2")
 
-        d3.select("#selectButton").on("change", function(d) {
+
+
+
+        function selectState(selectedState){ 
+
+            let stateData = rawData[stateIndex[selectedState]]
+            // console.log(stateData)
+            let data = []
+            for (let [d, v] of Object.entries(stateData)) {
+                if (d === 'positive' || d === 'death' ||
+                    d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' ||
+                    d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
+                    d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
+                    d === 'hospitalized') {
+                    d = capitalize(d)
+                    if (!isNaN(parseInt(v))) {
+                        data.push({ category: d, value: +parseInt(v) })
+                    }
+                }
+            }
+                        console.log(data)
+
+            let x = d3.scaleBand()
+                .range([0, width])
+                .padding(0.5)
+
+            let xAxis = svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+
+            let y = d3.scaleLinear()
+                .range([height, 0])
+
+
+            let yAxis = svg.append('g')
+
+            x.domain(data.map(function (d) { return d.category}))
+
+            let maxY = d3.max(data, function (d) { return d.value })
+
+            y.domain([0, maxY])
+
+            console.log(x.bandwidth())
+
+            yAxis.transition()
+                .duration(1000)
+                .call(d3.axisLeft(y))
+
+            xAxis.transition()
+                .duration(1000)
+                .call(d3.axisBottom(x))
+                .attr("transform", "translate(-0.2," + height + ")")
+                .selectAll("text")
+                .attr("transform", "translate(-10,0)rotate(-45)")
+                .style("text-anchor", "end")
+                .attr('x', -8)
+
+            
+
+            svg.selectAll(".bar")
+                .data(data)
+                .transition()
+                .duration(1000)
+                .attr("x", function (d) { return x(d.category)})
+                .attr("y", function (d) { return y(d.value)})
+                .attr("width", x.bandwidth())
+                .attr("height", function (d) { return height - y(d.value)})
+                .style("fill", "#69b3a2")
+                
+
+
+
+
+
+
+
+
+        }
+
+        d3.select("#selectButton").on("change", function (d) {
             let selectedOption = d3.select(this).property("value")
             selectState(selectedOption)
         })
-
+        // selectState("NY")
     });
-}
-    selectState("NY")
+
+    
    
 })
