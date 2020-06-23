@@ -61,7 +61,7 @@ const stateIndex = {
 
 let margin = 80,
 // let margin = { top: 80, right: 180, bottom: 80, left: 180 },
-    width = 1000 - 2 * margin,
+    width = 800 - 2 * margin,
     height = 600 - 2 * margin;
 console.log(margin.left)
 
@@ -137,7 +137,7 @@ let capitalize = word => {
 
         let maxY = d3.max(data, function (d) { return d.value })
 
-        y.domain([0, maxY])
+        y.domain([0, (maxY * 1.1)])
 
         console.log(x.bandwidth())
 
@@ -188,24 +188,11 @@ let capitalize = word => {
             }
                         console.log(data)
 
-            let x = d3.scaleBand()
-                .range([0, width])
-                .padding(0.5)
-
-            let xAxis = svg.append("g")
-                .attr("transform", "translate(0," + height + ")")
-
-            let y = d3.scaleLinear()
-                .range([height, 0])
-
-
-            let yAxis = svg.append('g')
-
             x.domain(data.map(function (d) { return d.category}))
 
             let maxY = d3.max(data, function (d) { return d.value })
 
-            y.domain([0, maxY])
+            y.domain([0, (maxY * 1.1)])
 
             console.log(x.bandwidth())
 
