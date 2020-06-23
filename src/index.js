@@ -134,14 +134,7 @@ function selectState(selectedState){
         // console.log(x["domain"])
 
         
-        xAxis.transition()
-            .duration(1000)
-            .call(d3.axisBottom(x))
-            .attr("transform", "translate(-0.2," + height + ")")
-            .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)")
-            .style("text-anchor", "end")
-            .attr('x', -8)
+
 
         let maxY = d3.max(data, function (d) { return d.value })
 
@@ -149,9 +142,8 @@ function selectState(selectedState){
 
         y.domain([0, maxY])
 
-        yAxis.transition()
-            .duration(1000)
-            .call(d3.axisLeft(y))
+  
+            
 
         // let test1 = data = (d) => {
         //     console.log(d)
@@ -169,6 +161,20 @@ function selectState(selectedState){
             .attr("width", x.bandwidth())
             .attr("height", function (d) { return height - y(d.value)})
             .style("fill", "#69b3a2")
+
+
+        yAxis.transition()
+            .duration(1000)
+            .call(d3.axisLeft(y))
+
+        xAxis.transition()
+            .duration(1000)
+            .call(d3.axisBottom(x))
+            .attr("transform", "translate(-0.2," + height + ")")
+            .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end")
+            .attr('x', -8)
 
         d3.select("#selectButton")
             .selectAll("myOptions")
