@@ -122,44 +122,44 @@ function selectState(selectedState){
         // console.log(rawData)
         let stateData = rawData[stateIndex[selectedState]]
         // console.log(stateData)
-        let data = {}
+        let data = []
         // stateData.forEach(function (d) {
-        for (let [d,value] of Object.entries(stateData)) {
+        for (let [d,v] of Object.entries(stateData)) {
             if (d === 'positive' || d === 'negative' || d === 'death' || d === 'totalTestResults' ||
                 d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' || 
                 d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
                 d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
                 d === 'hospitalized') {
                     d = capitalize(d)
-                    data[d] = isNaN(parseInt(value)) ? 0 : +parseInt(value)
+                    data.push( { category: d, value: isNaN(parseInt(v)) ? +0 : +parseInt(v) })
             }
         }
 
         console.log(data)
 
-        x.domain(Object.keys(data))
+        x.domain(data.map(function (d) { return d.category}))
         // console.log(Object.keys(x))
         // console.log(x["domain"])
 
         
-        xAxis.transition()
-            .duration(1000)
-            .call(d3.axisBottom(x))
-            .attr("transform", "translate(-0.2," + height + ")")
-            .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)")
-            .style("text-anchor", "end")
-            .attr('x', -8)
+        // xAxis.transition()
+        //     .duration(1000)
+        //     .call(d3.axisBottom(x))
+        //     .attr("transform", "translate(-0.2," + height + ")")
+        //     .selectAll("text")
+        //     .attr("transform", "translate(-10,0)rotate(-45)")
+        //     .style("text-anchor", "end")
+        //     .attr('x', -8)
 
-        let maxY = d3.max(Object.values(data))
+        let maxY = d3.max(data, function (d) { return d.value })
 
         // console.log(maxY)
 
         y.domain([0, maxY])
 
-        yAxis.transition()
-            .duration(1000)
-            .call(d3.axisLeft(y))
+        // yAxis.transition()
+        //     .duration(1000)
+        //     .call(d3.axisLeft(y))
 
         // let test1 = data = (d) => {
         //     console.log(d)
@@ -173,11 +173,19 @@ function selectState(selectedState){
             .enter().append("rect")
             .attr("class", "bar")
             // .attr("x", function (d, i) { return x(data[i])})
-            .attr("x", function (d) { return x(d)})
-            .attr("y", function (d,i) { return Object.values(y[i])})
-            .attr("width", x.bandwidth())
-            .attr("height", function (d,i) { return height - y(d)})
+            .attr("x", function (d) { return x(d.category)})
+            .attr("y", function (d) { return y(d.value)})
+            .attr("width", 100)
+            .attr("height", function (d) { return height - y(d.value)})
             .style("fill", "#69b3a2")
+
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+        // add the y Axis
+        svg.append("g")
+            .call(d3.axisLeft(y));
 
         // for (let i = 0; i < data.length; i += 1) {
         //     const state = data[i];
