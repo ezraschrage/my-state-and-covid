@@ -100,6 +100,20 @@ let yAxis = svg.append('g')
     //         }
     //     })
 
+let capitalize = word => {
+    let wordArray = word.split('')
+    let newWord = [];
+    wordArray.forEach((char, i) => {
+        if (char !== char.toUpperCase()) {
+            newWord.push(char)
+        } else {
+            newWord.push(' ' + char.toUpperCase())
+        }
+    })
+
+    newWord[0] = newWord[0].toUpperCase()
+    return newWord.join('')
+}
 
 
 function selectState(selectedState){ 
@@ -116,17 +130,54 @@ function selectState(selectedState){
                 d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
                 d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
                 d === 'hospitalized') {
-                    data[d] = isNaN(parseInt(value)) ? 0 : parseInt(value)
+                    d = capitalize(d)
+                    data[d] = isNaN(parseInt(value)) ? 0 : +parseInt(value)
             }
         }
 
         console.log(data)
 
         x.domain(Object.keys(data))
-        console.log(Object.keys(data))
+        // console.log(Object.keys(x))
+        // console.log(x["domain"])
 
+        
+        xAxis.transition()
+            .duration(1000)
+            .call(d3.axisBottom(x))
+            .attr("transform", "translate(-0.2," + height + ")")
+            .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end")
+            .attr('x', -8)
 
-        // console.log(data)
+        let maxY = d3.max(Object.values(data))
+
+        // console.log(maxY)
+
+        y.domain([0, maxY])
+
+        yAxis.transition()
+            .duration(1000)
+            .call(d3.axisLeft(y))
+
+        // let test1 = data = (d) => {
+        //     console.log(d)
+        // }
+        // console.log(Object.entries(x))
+        // console.log(Object.entries(y))
+        console.log(x.bandwidth())
+
+        svg.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            // .attr("x", function (d, i) { return x(data[i])})
+            .attr("x", function (d) { return x(d)})
+            .attr("y", function (d,i) { return Object.values(y[i])})
+            .attr("width", x.bandwidth())
+            .attr("height", function (d,i) { return height - y(d)})
+            .style("fill", "#69b3a2")
 
         // for (let i = 0; i < data.length; i += 1) {
         //     const state = data[i];
@@ -169,6 +220,6 @@ function selectState(selectedState){
 
     });
 }
-    selectState("NY")
+    selectState("NJ")
    
 })
