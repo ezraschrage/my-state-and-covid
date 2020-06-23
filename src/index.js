@@ -11,7 +11,6 @@ const stateIndex = {
     "CT": 7,
     "DC": 8,
     "DE": 9,
-    // "FM": "Federated States Of Micronesia",
     "FL": 10,
     "GA": 11,
     "GU": 12,
@@ -40,11 +39,9 @@ const stateIndex = {
     "NM": 35,
     "NV": 36,
     "NY": 37,
-    // "MP": "Northern Mariana Islands",
     "OH": 38,
     "OK": 39,
     "OR": 40,
-    // "PW": "Palau",
     "PA": 41,
     "PR": 42,
     "RI": 43,
@@ -62,43 +59,31 @@ const stateIndex = {
     "WY": 55
 }
 
-// let stateNameArray = Object.keys(stateNames);
-
-let margin = { top: 80, right: 180, bottom: 80, left: 180 },
-    width = 1000,
-    height = 1000;
+let margin = 80,
+// let margin = { top: 80, right: 180, bottom: 80, left: 180 },
+    width = 1000 - 2 * margin,
+    height = 600 - 2 * margin;
+console.log(margin.left)
 
 let svg = d3.select("#data-section")
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", width + (2 * margin))
+    .attr("height", height + (2 * margin))
     .append("g")
-    .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", `translate(${margin}, ${margin})`);
 
 let x = d3.scaleBand()
         .range([0, width])
-        .padding(1)
+        .padding(0.5)
 
 let xAxis = svg.append("g")
             .attr("transform", "translate(0," + height + ")")
 
 let y = d3.scaleLinear()
         .range([height, 0])
+        
 
 let yAxis = svg.append('g')
-
-    // let findMax = data => {
-    //     let values = Object.values(data)
-    //     // console.log(values)
-    //     let onlyNums = values.map(function (num) {
-    //         // console.log(typeof num === "number")
-    //         if (typeof num !== "number" || isNaN(num)) {
-    //             return 0
-    //         } else {
-    //             return num
-    //         }
-    //     })
 
 let capitalize = word => {
     let wordArray = word.split('')
@@ -131,7 +116,9 @@ function selectState(selectedState){
                 d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
                 d === 'hospitalized') {
                     d = capitalize(d)
-                    data.push( { category: d, value: isNaN(parseInt(v)) ? +0 : +parseInt(v) })
+                    if (!isNaN(parseInt(v))) {
+                    data.push( { category: d, value: +parseInt(v) })
+                }
             }
         }
 
@@ -142,14 +129,14 @@ function selectState(selectedState){
         // console.log(x["domain"])
 
         
-        // xAxis.transition()
-        //     .duration(1000)
-        //     .call(d3.axisBottom(x))
-        //     .attr("transform", "translate(-0.2," + height + ")")
-        //     .selectAll("text")
-        //     .attr("transform", "translate(-10,0)rotate(-45)")
-        //     .style("text-anchor", "end")
-        //     .attr('x', -8)
+        xAxis.transition()
+            .duration(1000)
+            .call(d3.axisBottom(x))
+            .attr("transform", "translate(-0.2," + height + ")")
+            .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end")
+            .attr('x', -8)
 
         let maxY = d3.max(data, function (d) { return d.value })
 
@@ -157,9 +144,9 @@ function selectState(selectedState){
 
         y.domain([0, maxY])
 
-        // yAxis.transition()
-        //     .duration(1000)
-        //     .call(d3.axisLeft(y))
+        yAxis.transition()
+            .duration(1000)
+            .call(d3.axisLeft(y))
 
         // let test1 = data = (d) => {
         //     console.log(d)
@@ -172,59 +159,11 @@ function selectState(selectedState){
             .data(data)
             .enter().append("rect")
             .attr("class", "bar")
-            // .attr("x", function (d, i) { return x(data[i])})
             .attr("x", function (d) { return x(d.category)})
             .attr("y", function (d) { return y(d.value)})
-            .attr("width", 100)
+            .attr("width", x.bandwidth())
             .attr("height", function (d) { return height - y(d.value)})
             .style("fill", "#69b3a2")
-
-        svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));
-
-        // add the y Axis
-        svg.append("g")
-            .call(d3.axisLeft(y));
-
-        // for (let i = 0; i < data.length; i += 1) {
-        //     const state = data[i];
-        //     const name = state.state;
-        //     // console.log(data)
-        //     // data[`${name}`] = {
-        //     data.forEach(function (d) {
-        //         d.abreviation = name,
-        //         d.name = stateNames[name],
-        //         d.positive = isNaN(parseInt(state.positive)) ? 0 : parseInt(state.positive),
-        //         dnegative = isNaN(parseInt(state.negative)) ? 0 : parseInt(state.negative),
-        //         d.death = isNaN(parseInt(state.death)) ? 0 :  parseInt(state.death),
-        //         d.totalTestResults = isNaN(parseInt(state.totalTestResults)) ? 0 : parseInt(state.totalTestResults),
-        //         d.hospitalizedCurrently = isNaN(parseInt(state.hospitalizedCurrently)) ? 0 : parseInt(state.hospitalizedCurrently),
-        //         d.hospitalizedCumulative = isNaN(parseInt(state.hospitalizedCumulative)) ? 0 : parseInt(state.hospitalizedCumulative),
-        //         d.inIcuCurrently = isNaN(parseInt(state.inIcuCurrently)) ? 0 : parseInt(state.inIcuCurrently),
-        //         d.inIcuCumulative = isNaN(parseInt(state.inIcuCumulative)) ? 0 : parseInt(state.inIcuCumulative),
-        //         d.onVentilatorCurrently = isNaN(parseInt(state.onVentilatorCurrently)) ? 0 : parseInt(state.onVentilatorCurrently),
-        //         d.onVentilatorCumulative = isNaN(parseInt(state.onVentilatorCumulative)) ? 0 : parseInt(state.onVentilatorCumulative),
-        //         d.recovered = isNaN(parseInt(state.recovered)) ? 0 : parseInt(state.recovered),
-        //         d.hospitalized = isNaN(parseInt(state.hospitalized)) ? 0 : parseInt(state.hospitalized)
-        //     })
-        // }
-        
-
-        
-        // let categories = Object.keys(states[0])
-        //     .filter(function (d) {
-        //         return ((d != "abreviation") & (d != "name"));
-        //     });
-        
-        // let selection = Object.keys(data[37])
-        //     .filter(key => categories.includes(key))
-        //     .reduce((obj, key) => {
-        //         return {
-        //             ...obj,
-        //             [key]: states[37][key]
-        //         };
-        //     }, {});
 
     });
 }
