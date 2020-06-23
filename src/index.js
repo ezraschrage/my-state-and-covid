@@ -101,10 +101,10 @@ let capitalize = word => {
 
 
     d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (rawData) {
-        // console.log(rawData)
+        console.log(rawData)
 
 
-        let stateData = rawData[stateIndex["NY"]]
+        let stateData = rawData[stateIndex["AK"]]
         
         let data = []
         for (let [d, v] of Object.entries(stateData)) {
@@ -141,10 +141,17 @@ let capitalize = word => {
 
         console.log(x.bandwidth())
 
+        // yAxis.call(d3.axisLeft(y))
         yAxis.transition()
             .duration(1000)
             .call(d3.axisLeft(y))
 
+        // xAxis.call(d3.axisBottom(x))
+        //     .attr("transform", "translate(-0.2," + height + ")")
+        //     .selectAll("text")
+        //     .attr("transform", "translate(-10,0)rotate(-45)")
+        //     .style("text-anchor", "end")
+        //     .attr('x', -8)
         xAxis.transition()
             .duration(1000)
             .call(d3.axisBottom(x))
@@ -158,19 +165,38 @@ let capitalize = word => {
             .data(data)
             .enter().append("rect")
             .attr("class", "bar")
+            .attr("x", function (d) { return x(d.category) })
+            .attr("width", x.bandwidth())
+            .style("fill", "#69b3a2")            
+            .attr("height", function (d) { return height - y(0) })
+            .attr("y", function (d) { return y(0) })
+            
+
+        svg.selectAll("rect")
             .transition()
             .duration(1000)
-            .attr("x", function (d) { return x(d.category) })
-            .attr("y", function (d) { return y(d.value) })
-            .attr("width", x.bandwidth())
-            .attr("height", function (d) { return height - y(d.value) })
-            .style("fill", "#69b3a2")
+            .attr("y", function (d) { return y(d.value); })
+            .attr("height", function (d) { return height - y(d.value); })
+            .delay(function (d, i) { console.log(i); return (i * 100) })
+
+        
+        // svg.selectAll(".bar")
+        //     .data(data)
+        //     .enter().append("rect")
+        //     .attr("class", "bar")
+        //     .transition()
+        //     .duration(1000)
+        //     .attr("x", function (d) { return x(d.category) })
+        //     .attr("y", function (d) { return y(d.value) })
+        //     .attr("width", x.bandwidth())
+        //     .attr("height", function (d) { return height - y(d.value) })
+        //     .style("fill", "#69b3a2")
 
 
 
 
         function selectState(selectedState){ 
-
+            
             let stateData = rawData[stateIndex[selectedState]]
             // console.log(stateData)
             let data = []
@@ -188,6 +214,10 @@ let capitalize = word => {
             }
                         console.log(data)
 
+            let x = d3.scaleBand()
+                .range([0, width])
+                .padding(0.5)
+            
             x.domain(data.map(function (d) { return d.category}))
 
             let maxY = d3.max(data, function (d) { return d.value })
@@ -209,17 +239,37 @@ let capitalize = word => {
                 .style("text-anchor", "end")
                 .attr('x', -8)
 
-            
-
-            svg.selectAll(".bar")
+            // svg.selectAll(".bar").remove().transition(1000)
+            let u = svg.selectAll("rect")
                 .data(data)
-                .transition()
+
+            u
+                .enter()
+                .append("rect") // Add a new rect for each new elements
+                .merge(u) // get the already existing elements as well
+                .transition() // and apply changes to all of them
                 .duration(1000)
-                .attr("x", function (d) { return x(d.category)})
-                .attr("y", function (d) { return y(d.value)})
+                .attr("x", function (d) { return x(d.category); })
+                .attr("y", function (d) { return y(d.value); })
                 .attr("width", x.bandwidth())
-                .attr("height", function (d) { return height - y(d.value)})
-                .style("fill", "#69b3a2")
+                .attr("height", function (d) { return height - y(d.value); })
+                .attr("fill", "#69b3a2")
+
+            // If less group in the new dataset, I delete the ones not in use anymore
+            u
+                .exit()
+                .remove()
+            // svg.selectAll(".bar")
+            //     .data(data)
+            //     .enter().append("rect")
+            //     .attr("class", "bar")
+            //     .transition()
+            //     .duration(1000)
+            //     .attr("x", function (d) { return x(d.category)})
+            //     .attr("y", function (d) { return y(d.value)})
+            //     .attr("width", x.bandwidth())
+            //     .attr("height", function (d) { return height - y(d.value)})
+            //     .style("fill", "#800080")
                 
 
 
