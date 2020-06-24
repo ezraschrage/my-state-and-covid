@@ -59,6 +59,65 @@ document.addEventListener("DOMContentLoaded", () => {
         "WY": 55
     }
 
+    const stateNames = {
+        "Alabama": "AL",
+        "Alaska": "AK",
+        "American Samoa": "AS",
+        "Arizona": "AZ",
+        "Arkansas": "AR",
+        "California": "CA",
+        "Colorado": "CO",
+        "Connecticut": "CT",
+        "Delaware": "DE",
+        "District Of Columbia": "DC",
+        "Florida": "FL",
+        "Georgia": "GA",
+        "Guam": "GU",
+        "Hawaii": "HI",
+        "Idaho": "ID",
+        "Illinois": "IL",
+        "Indiana": "IN",
+        "Iowa": "IA",
+        "Kansas": "KS",
+        "Kentucky": "KY",
+        "Louisiana": "LA",
+        "Maine": "ME",
+        "Maryland": "MD",
+        "Massachusetts": "MA",
+        "Michigan": "MI",
+        "Minnesota": "MN",
+        "Mississippi": "MS",
+        "Missouri": "MO",
+        "Montana": "MT",
+        "Nebraska": "NE",
+        "Nevada": "NV",
+        "New Hampshire": "NH",
+        "New Jersey": "NJ",
+        "New Mexico": "NM",
+        "New York": "NY",
+        "North Carolina": "NC",
+        "North Dakota": "ND",
+        "Northern Mariana Islands": "MP",
+        "Ohio": "OH",
+        "Oklahoma": "OK",
+        "Oregon": "OR",
+        "Pennsylvania": "PA",
+        "Puerto Rico": "PR",
+        "Rhode Island": "RI",
+        "South Carolina": "SC",
+        "South Dakota": "SD",
+        "Tennessee": "TN",
+        "Texas": "TX",
+        "Utah": "UT",
+        "Vermont": "VT",
+        "Virgin Islands": "VI",
+        "Virginia": "VA",
+        "Washington": "WA",
+        "West Virginia": "WV",
+        "Wisconsin": "WI",
+        "Wyoming": "WY"
+    }
+
     let margin = 100,
         width = 800 - 2 * margin,
         height = 600 - 2 * margin;
@@ -84,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     d3.select("#selectButton")
         .selectAll("myOptions")
-        .data(Object.keys(stateIndex))
+        .data(Object.keys(stateNames))
         .enter()
         .append("option")
         .text(function (d) { return d; })
@@ -109,16 +168,13 @@ document.addEventListener("DOMContentLoaded", () => {
     function selectState(selectedState) { 
 
         d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (rawData) {
-            // d3.selectAll("g")
-            //     .exit().remove()
-
-            // d3.selectAll("text")
-            //     .exit().remove()
-            
-            
-            let stateData = rawData[stateIndex[selectedState]]
-            // console.log(stateData)
+            console.log(selectedState)
+            let initials = stateNames[selectedState]
+            console.log(initials)
+            let stateData = rawData[stateIndex[initials]]
+            console.log(stateData)
             let data = []
+
             for (let [d, v] of Object.entries(stateData)) {
                 if (d === 'positive' || d === 'death' ||
                     d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' ||
@@ -132,16 +188,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
-
             x.domain(data.map(function (d) { return d.category }))
 
-
             let maxY = d3.max(data, function (d) { return d.value })
-
-
             y.domain([0, (maxY * 1.2)])
 
-            
             yAxis.transition()
                 .duration(1000)
                 .call(d3.axisLeft(y))
@@ -154,18 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 .attr("transform", "translate(-10,0)rotate(-45)")
                 .style("text-anchor", "end")
                 .attr('x', -8)
-
-//             var circles = d3.selectAll('svg').append('svg')
-//               .append('g').attr('class', 'circles').data( someData );
-
-// circles.enter().append('g').attr('class', 'circle')
-//                .append('circle')
-//                  .attr('cx', function(d) { return xScale(d); })
-//                  .attr('cy', function(d) { return yScale(d); })
-//                .append('text').attr('style', 'display:none;')
-//                  .text(function(d) { return d.title; })
-//                  .attr('x', function(d) { return xScale(d); })
-//                  .attr('y', function(d) { return yScale(d) + 2*radius(d); });
 
             let bar = svg.selectAll("rect")
                 .data(data)
@@ -186,14 +225,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 .attr("height", function (d) { return height - y(d.value) })
                 .style("fill", "#69b3a2")
                  //     .delay(function (d, i) { console.log(i); return (i * 100) })
+
             bar.exit()
                 .remove()
-            // bar.append("text")
-            //     .attr("class", "value")
-            //     .attr('x', (a) => x(a.category) + x.bandwidth() / 2)
-            //     .attr('y', (a) => y(a.value) - 10)
-            //     .attr('text-anchor', 'middle')
-            //     .text(function (d) { return `${(d.value)}`})
 
             svg
                 .append('text')
@@ -212,6 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .text('Categories')
 
         })
+
         d3.select("#selectButton").on("change", function (d) {
             let selectedOption = d3.select(this).property("value")
             selectState(selectedOption)
@@ -219,5 +254,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     }
-    selectState("AK")
+    selectState("Alaska")
 })
