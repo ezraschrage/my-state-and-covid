@@ -109,13 +109,13 @@ document.addEventListener("DOMContentLoaded", () => {
     function selectState(selectedState) { 
 
         d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (rawData) {
-            d3.selectAll("g")
-                .exit().remove()
+            // d3.selectAll("g")
+            //     .exit().remove()
 
-            // d3.selectAll(".axis")
+            // d3.selectAll("text")
             //     .exit().remove()
             
-            d3.selectAll("g")
+            
             let stateData = rawData[stateIndex[selectedState]]
             // console.log(stateData)
             let data = []
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let maxY = d3.max(data, function (d) { return d.value })
 
 
-            y.domain([0, (maxY * 1.1)])
+            y.domain([0, (maxY * 1.2)])
 
             
             yAxis.transition()
@@ -155,18 +155,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 .style("text-anchor", "end")
                 .attr('x', -8)
 
+//             var circles = d3.selectAll('svg').append('svg')
+//               .append('g').attr('class', 'circles').data( someData );
+
+// circles.enter().append('g').attr('class', 'circle')
+//                .append('circle')
+//                  .attr('cx', function(d) { return xScale(d); })
+//                  .attr('cy', function(d) { return yScale(d); })
+//                .append('text').attr('style', 'display:none;')
+//                  .text(function(d) { return d.title; })
+//                  .attr('x', function(d) { return xScale(d); })
+//                  .attr('y', function(d) { return yScale(d) + 2*radius(d); });
+
             let bar = svg.selectAll("rect")
                 .data(data)
 
-            // bar.selectAll("rect")
-            //     .transition()
-            //     .duration(1000)
-            //     .attr("y", function (d) { return y(d.value); })
-            //     .attr("height", function (d) { return height - y(d.value); })
-           
+            let text = svg.selectAll("text")
+
+            text.exit().remove()
             
             bar.enter()
-                .append("rect")
+            .append("rect")
                 .attr("class", "rect")
                 .merge(bar)
                 .transition()
@@ -177,65 +186,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 .attr("height", function (d) { return height - y(d.value) })
                 .style("fill", "#69b3a2")
                  //     .delay(function (d, i) { console.log(i); return (i * 100) })
-            
-            bar.append("text")
-                .attr("class", "value")
-                .attr('x', (a) => x(a.category) + x.bandwidth() / 2)
-                .attr('y', (a) => y(a.value) - 10)
-                .attr('text-anchor', 'middle')
-                .text(function (d) { return `${(d.value)}`})
-
             bar.exit()
                 .remove()
-           
-                
-                
-                
-     
-
-
-
-            // svg.selectAll(".value").remove()
-            // svg.selectAll(".bar").remove().transition(1000)
-            // d3.selectAll(".value")
-            //     .remove()
-
-            // let u = svg.selectAll("rect")
-            //     .data(data)
-
-            // u.enter()
-            //     .append("rect") // Add a new rect for each new elements
-            //     .merge(u) // get the already existing elements as well
-            //     .transition() // and apply changes to all of them
-            //     .duration(1000)
-            //     .attr("x", function (d) { return x(d.category); })
-            //     .attr("y", function (d) { return y(d.value); })
-            //     .attr("width", x.bandwidth())
-            //     .attr("height", function (d) { return height - y(d.value); })
-            //     .attr("fill", "#69b3a2")
-                
-
             // bar.append("text")
-            //     .data(data)
             //     .attr("class", "value")
-            //     .attr('x', (d) => x(d.category) + x.bandwidth() / 2)
-            //     .attr('y', (d) => y(d.value) - 10)
+            //     .attr('x', (a) => x(a.category) + x.bandwidth() / 2)
+            //     .attr('y', (a) => y(a.value) - 10)
             //     .attr('text-anchor', 'middle')
-            //     .text(function (d) { return `${(d.value)}` })
+            //     .text(function (d) { return `${(d.value)}`})
 
-            // d3.selectAll("g").append("text")
-            //     .attr("class", "value")
-            //     .attr('x', (d) => x(d.category) + x.bandwidth() / 2)
-            //     .attr('y', (d) => y(d.value) - 10)
-            //     .attr('text-anchor', 'middle')
-            //     .text(function (d) { return `${(d.value)}` })
+            svg
+                .append('text')
+                .attr('class', 'y-axis-label')
+                .attr('x', -200)
+                .attr('y', margin / 3)
+                .attr('transform', 'rotate(-90)')
+                .attr('text-anchor', 'middle')
+                .text('Incidents')
 
-            // If less group in the new dataset, I delete the ones not in use anymore
-            // u
-            //     .exit()
-            //     .remove()
-        
-
+            svg.append('text')
+                .attr('class', 'x-axis-label')
+                .attr('x', width / 2 + margin)
+                .attr('y', height + margin * 1.7)
+                .attr('text-anchor', 'middle')
+                .text('Categories')
 
         })
         d3.select("#selectButton").on("change", function (d) {
