@@ -4,13 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="icon" href="src/images/favicon.ico" />
     <link rel="stylesheet" href="./src/styles/_css_reset.css">
     <link rel="stylesheet" href="./src/styles/index.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap" rel="stylesheet">
     <script src="http://d3js.org/d3.v4.min.js"></script>
     <script src="src/index.js"></script>
     
-    <title>Document</title>
+    <title>My State and COVID</title>
   </head>
 
   <body>
@@ -30,18 +31,18 @@
             actively collected to attempt to plot the course of the virus in real
             time. Data on its own can be difficult to visualize. My State and
             COVID presents a simple interface where you can see the data
-            of a particular state. Every state has data on the test resuls and 
-            the number of deaths attributable to
+            of a particular state. Every state has data on the test results and 
+            the number of deaths directly attributable to
             COVID. A few states have data concerning the number of people
-            hospitalized, on ventilators, in the ICU, and recovered. Next to 
-            each state is a letter grade assigned by the COVID Tracking
-            Project assessing the quality of the data available. This data is 
+            hospitalized, on ventilators, in the ICU, and recovered. This data is 
             updated daily from the COVID Tracking Project API.
           </p>
         </div>
         <div class="data-box">
-          <div></div>
-          <select id="selectButton">
+          <div>Select a state:
+            <select id="selectButton"></select>
+          </div>
+          
             <!-- <option value="NY" selected>NY</option> -->
 
           </select>
@@ -56,8 +57,14 @@
               <a href="https://covidtracking.com/">covidtracking.com.</a>
               They are not officially associated with this website.
             </p>
-              <a href="https://github.com/ezraschrage/Dungeon-Companion">
-                <img class="github" src="./src/images/github.png">
+              <a href="https://github.com/ezraschrage/my-state-and-covid">
+                <img class="icon" src="./src/images/github.png">
+              </a>
+              <a href="https://www.linkedin.com/in/ezraschrage/">
+                <img class="icon" src="./src/images/linkedin.png">
+              </a>
+              <a href="https://angel.co/u/ezra-schrage">
+                <img class="icon" src="./src/images/angellist.png">
               </a>
         </div>
       </div>

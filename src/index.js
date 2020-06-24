@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Wyoming": "WY"
     }
 
-    let margin = 100,
+    let margin = 70,
         width = 800 - 2 * margin,
         height = 600 - 2 * margin;
 
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let x = d3.scaleBand()
         .range([0, width])
-        .padding(0.5)
+        .padding(0.4)
 
     let xAxis = svg.append("g")
         .attr("transform", "translate(0," + height + ")")
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (d === 'positive' || d === 'death' ||
                     d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' ||
                     d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
-                    d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
+                    d === 'onVentilatorCumulative' || d === 'recovered' ||
                     d === 'hospitalized') {
                     d = capitalize(d)
                     if (!isNaN(parseInt(v))) {
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .call(d3.axisBottom(x))
                 .attr("transform", "translate(-0.2," + height + ")")
                 .selectAll("text")
-                .attr("transform", "translate(-10,0)rotate(-45)")
+                .attr("transform", "translate(-7,0)rotate(-20)")
                 .style("text-anchor", "end")
                 .attr('x', -8)
 
@@ -232,8 +232,8 @@ document.addEventListener("DOMContentLoaded", () => {
             svg
                 .append('text')
                 .attr('class', 'y-axis-label')
-                .attr('x', -200)
-                .attr('y', margin / 3)
+                .attr('x', -height / 2)
+                .attr('y', -50)
                 .attr('transform', 'rotate(-90)')
                 .attr('text-anchor', 'middle')
                 .text('Incidents')
