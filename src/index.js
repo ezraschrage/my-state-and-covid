@@ -70,6 +70,18 @@ document.addEventListener("DOMContentLoaded", () => {
         .append("g")
         .attr("transform", `translate(${margin}, ${margin})`);
 
+    let x = d3.scaleBand()
+        .range([0, width])
+        .padding(0.5)
+
+    let xAxis = svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+
+    let y = d3.scaleLinear()
+        .range([height, 0])
+
+    let yAxis = svg.append('g')
+
     d3.select("#selectButton")
         .selectAll("myOptions")
         .data(Object.keys(stateIndex))
@@ -94,115 +106,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    function selectState(selectedState) { 
 
+        d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (rawData) {
+            d3.selectAll("g")
+                .exit().remove()
 
-    d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (rawData) {
-        console.log(rawData)
-
-
-        let stateData = rawData[stateIndex["AK"]]
-        
-        let data = []
-        for (let [d, v] of Object.entries(stateData)) {
-            if (d === 'positive' || d === 'death' ||
-                d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' ||
-                d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
-                d === 'onVentilatorCumulative' || d === 'recovered' || d === 'recovered' ||
-                d === 'hospitalized') {
-                d = capitalize(d)
-                if (!isNaN(parseInt(v))) {
-                    data.push({ category: d, value: +parseInt(v) })
-                }
-            }
-        }
-
-        let x = d3.scaleBand()
-            .range([0, width])
-            .padding(0.5)
-
-        let xAxis = svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-
-        let y = d3.scaleLinear()
-            .range([height, 0])
-
-
-        let yAxis = svg.append('g')
-
-        x.domain(data.map(function (d) { return d.category }))
-
-        let maxY = d3.max(data, function (d) { return d.value })
-
-        y.domain([0, (maxY * 1.1)])
-
-        console.log(x.bandwidth())
-
-        // yAxis.call(d3.axisLeft(y))
-        yAxis.transition()
-            .duration(1000)
-            .call(d3.axisLeft(y))
-
-        // xAxis.call(d3.axisBottom(x))
-        //     .attr("transform", "translate(-0.2," + height + ")")
-        //     .selectAll("text")
-        //     .attr("transform", "translate(-10,0)rotate(-45)")
-        //     .style("text-anchor", "end")
-        //     .attr('x', -8)
-        xAxis.transition()
-            .duration(1000)
-            .call(d3.axisBottom(x))
-            .attr("transform", "translate(-0.2," + height + ")")
-            .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)")
-            .style("text-anchor", "end")
-            .attr('x', -8)
-
-        let bar = svg.selectAll()
-            .data(data)
-            .enter()
-            .append("g")
-        
-        bar.append("rect")
-            .attr("class", "bar")
-            .attr("x", function (d) { return x(d.category) })
-            .attr("width", x.bandwidth())
-            .style("fill", "#69b3a2")            
-            .attr("height", function (d) { return height - y(0) })
-            .attr("y", function (d) { return y(0) })
+            // d3.selectAll(".axis")
+            //     .exit().remove()
             
-
-        bar.selectAll("rect")
-            .transition()
-            .duration(1000)
-            .attr("y", function (d) { return y(d.value); })
-            .attr("height", function (d) { return height - y(d.value); })
-            .delay(function (d, i) { console.log(i); return (i * 100) })
-
-        bar.append("text")
-            .attr("class", "value")
-            .attr('x', (d) => x(d.category) + x.bandwidth() / 2)
-            .attr('y', (d) => y(d.value) - 10)
-            .attr('text-anchor', 'middle')
-            .text(function (d) { return `${(d.value)}`})
-            
-        
-        // svg.selectAll(".bar")
-        //     .data(data)
-        //     .enter().append("rect")
-        //     .attr("class", "bar")
-        //     .transition()
-        //     .duration(1000)
-        //     .attr("x", function (d) { return x(d.category) })
-        //     .attr("y", function (d) { return y(d.value) })
-        //     .attr("width", x.bandwidth())
-        //     .attr("height", function (d) { return height - y(d.value) })
-        //     .style("fill", "#69b3a2")
-
-
-
-
-        function selectState(selectedState){ 
-            
+            d3.selectAll("g")
             let stateData = rawData[stateIndex[selectedState]]
             // console.log(stateData)
             let data = []
@@ -218,20 +131,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             }
-                        console.log(data)
 
-            let x = d3.scaleBand()
-                .range([0, width])
-                .padding(0.5)
-            
-            x.domain(data.map(function (d) { return d.category}))
+
+            x.domain(data.map(function (d) { return d.category }))
+
 
             let maxY = d3.max(data, function (d) { return d.value })
 
+
             y.domain([0, (maxY * 1.1)])
 
-            console.log(x.bandwidth())
-
+            
             yAxis.transition()
                 .duration(1000)
                 .call(d3.axisLeft(y))
@@ -245,33 +155,73 @@ document.addEventListener("DOMContentLoaded", () => {
                 .style("text-anchor", "end")
                 .attr('x', -8)
 
+            let bar = svg.selectAll("rect")
+                .data(data)
+
+            // bar.selectAll("rect")
+            //     .transition()
+            //     .duration(1000)
+            //     .attr("y", function (d) { return y(d.value); })
+            //     .attr("height", function (d) { return height - y(d.value); })
+           
+            
+            bar.enter()
+                .append("rect")
+                .attr("class", "rect")
+                .merge(bar)
+                .transition()
+                .duration(1000)
+                .attr("x", function (d) { return x(d.category) })
+                .attr("y", function (d) { return y(d.value) })
+                .attr("width", x.bandwidth())
+                .attr("height", function (d) { return height - y(d.value) })
+                .style("fill", "#69b3a2")
+                 //     .delay(function (d, i) { console.log(i); return (i * 100) })
+            
+            bar.append("text")
+                .attr("class", "value")
+                .attr('x', (a) => x(a.category) + x.bandwidth() / 2)
+                .attr('y', (a) => y(a.value) - 10)
+                .attr('text-anchor', 'middle')
+                .text(function (d) { return `${(d.value)}`})
+
+            bar.exit()
+                .remove()
+           
+                
+                
+                
+     
+
+
+
             // svg.selectAll(".value").remove()
             // svg.selectAll(".bar").remove().transition(1000)
-            d3.selectAll(".value")
-                .remove()
+            // d3.selectAll(".value")
+            //     .remove()
 
-            let u = svg.selectAll("rect")
-                .data(data)
+            // let u = svg.selectAll("rect")
+            //     .data(data)
 
-            u.enter()
-                .append("rect") // Add a new rect for each new elements
-                .merge(u) // get the already existing elements as well
-                .transition() // and apply changes to all of them
-                .duration(1000)
-                .attr("x", function (d) { return x(d.category); })
-                .attr("y", function (d) { return y(d.value); })
-                .attr("width", x.bandwidth())
-                .attr("height", function (d) { return height - y(d.value); })
-                .attr("fill", "#69b3a2")
+            // u.enter()
+            //     .append("rect") // Add a new rect for each new elements
+            //     .merge(u) // get the already existing elements as well
+            //     .transition() // and apply changes to all of them
+            //     .duration(1000)
+            //     .attr("x", function (d) { return x(d.category); })
+            //     .attr("y", function (d) { return y(d.value); })
+            //     .attr("width", x.bandwidth())
+            //     .attr("height", function (d) { return height - y(d.value); })
+            //     .attr("fill", "#69b3a2")
                 
 
-            bar.append("text")
-                .data(data)
-                .attr("class", "value")
-                .attr('x', (d) => x(d.category) + x.bandwidth() / 2)
-                .attr('y', (d) => y(d.value) - 10)
-                .attr('text-anchor', 'middle')
-                .text(function (d) { return `${(d.value)}` })
+            // bar.append("text")
+            //     .data(data)
+            //     .attr("class", "value")
+            //     .attr('x', (d) => x(d.category) + x.bandwidth() / 2)
+            //     .attr('y', (d) => y(d.value) - 10)
+            //     .attr('text-anchor', 'middle')
+            //     .text(function (d) { return `${(d.value)}` })
 
             // d3.selectAll("g").append("text")
             //     .attr("class", "value")
@@ -281,38 +231,19 @@ document.addEventListener("DOMContentLoaded", () => {
             //     .text(function (d) { return `${(d.value)}` })
 
             // If less group in the new dataset, I delete the ones not in use anymore
-            u
-                .exit()
-                .remove()
-            // svg.selectAll(".bar")
-            //     .data(data)
-            //     .enter().append("rect")
-            //     .attr("class", "bar")
-            //     .transition()
-            //     .duration(1000)
-            //     .attr("x", function (d) { return x(d.category)})
-            //     .attr("y", function (d) { return y(d.value)})
-            //     .attr("width", x.bandwidth())
-            //     .attr("height", function (d) { return height - y(d.value)})
-            //     .style("fill", "#800080")
-                
+            // u
+            //     .exit()
+            //     .remove()
+        
 
 
-
-
-
-
-
-
-        }
-
+        })
         d3.select("#selectButton").on("change", function (d) {
             let selectedOption = d3.select(this).property("value")
             selectState(selectedOption)
-        })
-        // selectState("NY")
+        
     });
 
-    
-   
+    }
+    selectState("AK")
 })
