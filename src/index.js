@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let margin = 70,
+    
         width = 800 - 2 * margin,
         height = 600 - 2 * margin;
 
@@ -127,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .attr("width", width + (2 * margin))
         .attr("height", height + (2 * margin))
         .append("g")
-        .attr("transform", `translate(${margin}, ${margin})`);
+        .attr("transform", `translate(${margin}, ${margin / 2})`);
 
     let x = d3.scaleBand()
         .range([0, width])
@@ -135,11 +136,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let xAxis = svg.append("g")
         .attr("transform", "translate(0," + height + ")")
+        .attr("class", "xAxis")
 
     let y = d3.scaleLinear()
         .range([height, 0])
 
     let yAxis = svg.append('g')
+        .attr("class", "yAxis")
 
     d3.select("#selectButton")
         .selectAll("myOptions")
@@ -176,10 +179,10 @@ document.addEventListener("DOMContentLoaded", () => {
             let data = []
 
             for (let [d, v] of Object.entries(stateData)) {
-                if (d === 'positive' || d === 'death' ||
+                if (d === 'positive' || d === 'recovered' || d === 'death' ||
                     d === 'hospitalizedCurrently' || d === 'hospitalizedCumulative' ||
                     d === 'inIcuCurrently' || d === 'inIcuCumulative' || d === 'onVentilatorCurrently' ||
-                    d === 'onVentilatorCumulative' || d === 'recovered' ||
+                    d === 'onVentilatorCumulative' || 
                     d === 'hospitalized') {
                     d = capitalize(d)
                     if (!isNaN(parseInt(v))) {
@@ -224,13 +227,40 @@ document.addEventListener("DOMContentLoaded", () => {
                 .attr("width", x.bandwidth())
                 .attr("height", function (d) { return height - y(d.value) })
                 .style("fill", "#69b3a2")
+                .on("mouseover", handleMouseOver)
+                .on("mouseout", handleMouseOut)
                  //     .delay(function (d, i) { console.log(i); return (i * 100) })
 
             bar.exit()
                 .remove()
 
-            svg
-                .append('text')
+
+
+            function handleMouseOver(d, i) {
+                svg.append('text')
+                    .data(data)
+                    .attr("class", "value")
+                    .attr('x', (d) => x(d.category) + x.bandwidth() / 2)
+                    .attr('y', (d) => y(d.value) - 10)
+                    .attr('text-anchor', 'middle')
+                    .text(function (d) { return `${(d.value)}` })
+
+                d3.select(this)
+                    .attr('fill', "darkcyan")
+                    .attr('r', 10)
+
+            }
+
+            function handleMouseOut(d, i) {
+                d3.select('.hoverVaule').remove();
+                d3.select(this)
+                    .attr('fill', "darksalmon")
+                    .attr('r', 6)
+
+            } 
+
+
+            svg.append('text')
                 .attr('class', 'y-axis-label')
                 .attr('x', -height / 2)
                 .attr('y', -50)
