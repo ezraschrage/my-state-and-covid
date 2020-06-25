@@ -94,7 +94,21 @@ background-size: cover;
     flex-direction: row;
 }
 
-* {
+p {
     font-family: 'Noto Sans JP', sans-serif;
 
+}
+
+.links-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.state-info {
+    display: flex;
+    justify-content: space-around;
+}
+
+.updated {
+    text-decoration: none;
 }

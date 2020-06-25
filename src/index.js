@@ -174,7 +174,10 @@ document.addEventListener("DOMContentLoaded", () => {
         d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (rawData) {
             let initials = stateNames[selectedState]
             let stateData = rawData[stateIndex[initials]]
+           
             let data = []
+            let death = 0
+            let updated = ""
 
             for (let [d, v] of Object.entries(stateData)) {
                 if (d === 'positive' || d === 'recovered' || d === 'death' ||
@@ -185,9 +188,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     d = capitalize(d)
                     if (!isNaN(parseInt(v))) {
                         data.push({ category: d, value: +parseInt(v) })
+                        if (d === "Death") death = v 
                     }
                 }
+                else if (d === "dateChecked") updated = v
             }
+            
 
             x.domain(data.map(function (d) { return d.category }))
 
@@ -244,6 +250,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 .attr('text-anchor', 'middle')
                 .text('Categories')
 
+            d3.select("deaths").remove().exit()
+            let deathText = d3.select(".state-name").append("deaths")
+
+            deathText.append("text")
+                    .text(`Total deaths in ${selectedState}: ${death}`)
+
+            d3.select("updated").remove().exit()
+            let updatedText = d3.select(".updated").append("updated")
+
+            let date = new Date(updated.slice(0,10))
+            let prettyDate = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`
+
+            updatedText.append("text")
+                .text(`Information last updated on ${prettyDate}`)
+                .style("text-decoration", "none")
+
             
 
         })
@@ -251,6 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
         d3.select("#selectButton").on("change", function (d) {
             let selectedOption = d3.select(this).property("value")
             selectState(selectedOption)
+            
         
     });
 
