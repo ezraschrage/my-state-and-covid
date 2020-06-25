@@ -24,48 +24,60 @@
         </h2>
       </div>
       <div class="body">
-        <div class="info-box">
-          <h3>Information and Purpose</h3>
-          <p>The COVID-19 pandemic has affected every part of the United States.
-            Thanks to the effort of the COVID Tracking Project, data is being
-            actively collected to attempt to plot the course of the virus in real
-            time. Data on its own can be difficult to visualize. My State and
-            COVID presents a simple interface where you can see the data
-            of a particular state. Every state has data on the test results and 
-            the number of deaths directly attributable to
-            COVID. A few states have data concerning the number of people
-            hospitalized, on ventilators, in the ICU, and recovered. This data is 
-            updated daily from the COVID Tracking Project API.
-          </p>
-        </div>
-        <div class="data-box">
-          <div>Select a state:
-            <select id="selectButton"></select>
+        <div class="top">
+            <div class="data-box">
+              <div>Select a state:
+                <select id="selectButton"></select>
+              </div>
+              </select>
+              <div id="data-section"></div>
+            </div>
+            <div class="table-box">
+              <!-- <table class="table">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Number of Cases</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table> -->
+            </div>
           </div>
-          
-            <!-- <option value="NY" selected>NY</option> -->
+          <div class="bottom">
+            <div class="info-box">
+              <h3>Information and Purpose</h3>
+              <p>The COVID-19 pandemic has affected every part of the United States.
+                Thanks to the effort of the COVID Tracking Project, data is being
+                actively collected to attempt to plot the course of the virus in real
+                time. Data on its own can be difficult to visualize. My State and
+                COVID presents a simple interface where you can see the data
+                of a particular state. Every state has data on the test results and 
+                the number of deaths directly attributable to
+                COVID. A few states have data concerning the number of people
+                hospitalized, on ventilators, in the ICU, and recovered. This data is 
+                updated daily from the COVID Tracking Project API.
+              </p>
+            </div>
 
-          </select>
-          <div id="data-section"></div>
-          <!-- <script src="dist/main.js"></script> -->
-        </div>
-        <div class="links-box">
-            <h3>Links and Attributions</h3>
-            <p>This website would not be possible without the great efforts of
-              the COVID Tracking Project. You can read more about them
-              and an in-depth guide to interpreting the data at their website
-              <a href="https://covidtracking.com/">covidtracking.com.</a>
-              They are not officially associated with this website.
-            </p>
-              <a href="https://github.com/ezraschrage/my-state-and-covid">
-                <img class="icon" src="./src/images/github.png">
-              </a>
-              <a href="https://www.linkedin.com/in/ezraschrage/">
-                <img class="icon" src="./src/images/linkedin.png">
-              </a>
-              <a href="https://angel.co/u/ezra-schrage">
-                <img class="icon" src="./src/images/angellist.png">
-              </a>
+            <div class="links-box">
+              <h3>Links and Attributions</h3>
+              <p>This website would not be possible without the great efforts of
+                the COVID Tracking Project. You can read more about them
+                and an in-depth guide to interpreting the data at their website
+                <a href="https://covidtracking.com/">covidtracking.com.</a>
+                They are not officially associated with this website.
+              </p>
+                <a href="https://github.com/ezraschrage/my-state-and-covid">
+                  <img class="icon" src="./src/images/github.png">
+                </a>
+                <a href="https://www.linkedin.com/in/ezraschrage/">
+                  <img class="icon" src="./src/images/linkedin.png">
+                </a>
+                <a href="https://angel.co/u/ezra-schrage">
+                  <img class="icon" src="./src/images/angellist.png">
+                </a>
+            </div>
         </div>
       </div>
     </div>

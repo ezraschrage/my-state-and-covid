@@ -118,17 +118,18 @@ document.addEventListener("DOMContentLoaded", () => {
         "Wyoming": "WY"
     }
 
-    let margin = 70,
-    
-        width = 800 - 2 * margin,
-        height = 600 - 2 * margin;
+    let margin = 100
+        horizontalMargin = 120,
+        verticalMargin = 100,
+        width = 900 - 2 * horizontalMargin,
+        height = 700 - 2 * verticalMargin;
 
     let svg = d3.select("#data-section")
         .append("svg")
-        .attr("width", width + (2 * margin))
+        .attr("width", width + (2 * horizontalMargin))
         .attr("height", height + (2 * margin))
         .append("g")
-        .attr("transform", `translate(${margin}, ${margin / 2})`);
+        .attr("transform", `translate(${horizontalMargin}, ${margin / 2})`);
 
     let x = d3.scaleBand()
         .range([0, width])
@@ -171,11 +172,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function selectState(selectedState) { 
 
         d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (rawData) {
-            console.log(selectedState)
             let initials = stateNames[selectedState]
-            console.log(initials)
             let stateData = rawData[stateIndex[initials]]
-            console.log(stateData)
             let data = []
 
             for (let [d, v] of Object.entries(stateData)) {
@@ -227,53 +225,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 .attr("width", x.bandwidth())
                 .attr("height", function (d) { return height - y(d.value) })
                 .style("fill", "#69b3a2")
-                .on("mouseover", handleMouseOver)
-                .on("mouseout", handleMouseOut)
-                 //     .delay(function (d, i) { console.log(i); return (i * 100) })
 
             bar.exit()
                 .remove()
 
-
-
-            function handleMouseOver(d, i) {
-                svg.append('text')
-                    .data(data)
-                    .attr("class", "value")
-                    .attr('x', (d) => x(d.category) + x.bandwidth() / 2)
-                    .attr('y', (d) => y(d.value) - 10)
-                    .attr('text-anchor', 'middle')
-                    .text(function (d) { return `${(d.value)}` })
-
-                d3.select(this)
-                    .attr('fill', "darkcyan")
-                    .attr('r', 10)
-
-            }
-
-            function handleMouseOut(d, i) {
-                d3.select('.hoverVaule').remove();
-                d3.select(this)
-                    .attr('fill', "darksalmon")
-                    .attr('r', 6)
-
-            } 
-
-
             svg.append('text')
                 .attr('class', 'y-axis-label')
                 .attr('x', -height / 2)
-                .attr('y', -50)
+                .attr('y', -80)
                 .attr('transform', 'rotate(-90)')
                 .attr('text-anchor', 'middle')
-                .text('Incidents')
+                .text('Reported Cases')
 
             svg.append('text')
                 .attr('class', 'x-axis-label')
-                .attr('x', width / 2 + margin)
-                .attr('y', height + margin * 1.7)
+                .attr('x', width / 3 + horizontalMargin)
+                .attr('y', height + verticalMargin)
                 .attr('text-anchor', 'middle')
                 .text('Categories')
+
+            
 
         })
 
