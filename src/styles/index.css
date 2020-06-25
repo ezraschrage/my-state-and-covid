@@ -93,3 +93,8 @@ background-size: cover;
     display: flex;
     flex-direction: row;
 }
+
+* {
+    font-family: 'Noto Sans JP', sans-serif;
+
+}
