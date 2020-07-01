@@ -121,8 +121,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let margin = 100
         horizontalMargin = 120,
         verticalMargin = 100,
-        width = 900 - 2 * horizontalMargin,
+        width = 1080 - 2 * horizontalMargin,
         height = 700 - 2 * verticalMargin;
+
+    console.log(height)
 
     let svg = d3.select("#data-section")
         .append("svg")
@@ -219,21 +221,33 @@ document.addEventListener("DOMContentLoaded", () => {
             let text = svg.selectAll("text")
 
             text.exit().remove()
+
+            bar.exit().remove()
             
             bar.enter()
             .append("rect")
-                .attr("class", "rect")
+                // .attr("class", "rect")
+                .attr("y", function (d) { return y(0) })
                 .merge(bar)
+                // .attr("y", function (d) { return y(0) })
+                // .attr("transform", function (d) { return x(d.category) })
+                // .attr("y", function (d) {
+                //     return y(0);
+                // })
+                // .attr("height", 0)
+                
+                // .ease(d3.easeBounceOut)
+                // .ease('linear')
+                .attr("x", function (d) { return x(d.category) })
+                // .attr("y", function (d) { return y(0) })
                 .transition()
                 .duration(1000)
-                .attr("x", function (d) { return x(d.category) })
                 .attr("y", function (d) { return y(d.value) })
                 .attr("width", x.bandwidth())
                 .attr("height", function (d) { return height - y(d.value) })
                 .style("fill", "#69b3a2")
 
-            bar.exit()
-                .remove()
+            
 
             svg.append('text')
                 .attr('class', 'y-axis-label')
@@ -255,6 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             deathText.append("text")
                     .text(`Total deaths in ${selectedState}: ${death}`)
+                    
 
             d3.select("updated").remove().exit()
             let updatedText = d3.select(".updated").append("updated")
@@ -266,6 +281,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 .text(`Information last updated on ${prettyDate}`)
                 .style("text-decoration", "none")
 
+
+            // let table_plot = makeTable()
+            //     .data(data)
+            //     // .sortBy('pval', true)
+            //     .filterCols(['col', 'x', 'y']);
+
+            // d3.select('.table-box').call(table_plot);
             
 
         })
