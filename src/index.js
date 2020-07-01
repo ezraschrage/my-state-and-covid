@@ -124,8 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
         width = 1080 - 2 * horizontalMargin,
         height = 700 - 2 * verticalMargin;
 
-    console.log(height)
-
     let svg = d3.select("#data-section")
         .append("svg")
         .attr("width", width + (2 * horizontalMargin))
@@ -196,7 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 else if (d === "dateChecked") updated = v
             }
             
-
             x.domain(data.map(function (d) { return d.category }))
 
             let maxY = d3.max(data, function (d) { return d.value })
@@ -226,26 +223,41 @@ document.addEventListener("DOMContentLoaded", () => {
             
             bar.enter()
             .append("rect")
-                // .attr("class", "rect")
                 .attr("y", function (d) { return y(0) })
                 .merge(bar)
-                // .attr("y", function (d) { return y(0) })
-                // .attr("transform", function (d) { return x(d.category) })
-                // .attr("y", function (d) {
-                //     return y(0);
-                // })
-                // .attr("height", 0)
-                
-                // .ease(d3.easeBounceOut)
-                // .ease('linear')
                 .attr("x", function (d) { return x(d.category) })
-                // .attr("y", function (d) { return y(0) })
                 .transition()
                 .duration(1000)
                 .attr("y", function (d) { return y(d.value) })
                 .attr("width", x.bandwidth())
                 .attr("height", function (d) { return height - y(d.value) })
                 .style("fill", "#69b3a2")
+          
+            d3.selectAll("rect")
+                .on("mouseover", mouseEnter)
+                .on("mouseout", mouseLeave)
+
+            function mouseEnter(d, i) {
+                svg.append('text')
+                    .attr('class', 'hoverVaule')
+                    .attr("x", x(d.category) + x.bandwidth() / 4)
+                    .attr("y", y(d.value) - 20)
+                    .text(d.value )
+                    .style("color", "#69b3a2")
+
+                // d3.select(this)
+                //     .attr('fill', "darkcyan")
+                //     .attr('r', 10)
+
+            }
+
+            function mouseLeave(d, i) {
+                d3.select('.hoverVaule').remove();
+                // d3.select(this)
+                //     .attr('fill', "darksalmon")
+                //     .attr('r', 6)
+
+            } 
 
             
 
@@ -281,13 +293,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 .text(`Information last updated on ${prettyDate}`)
                 .style("text-decoration", "none")
 
-
-            // let table_plot = makeTable()
-            //     .data(data)
-            //     // .sortBy('pval', true)
-            //     .filterCols(['col', 'x', 'y']);
-
-            // d3.select('.table-box').call(table_plot);
             
 
         })

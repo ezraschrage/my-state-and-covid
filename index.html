@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta property='og:title' content="My State and COVID" />
+    <meta property='og:image' content="example_graph.png" />
+    <meta property='og:description' content="Visualization of individual states and COVID data using Javascript and d3.js" />
+    <meta property='og:url' content="https://ezraschrage.com/my-state-and-covid/" />
     <link rel="icon" href="src/images/favicon.ico" />
     <link rel="stylesheet" href="./src/styles/_css_reset.css">
     <link rel="stylesheet" href="./src/styles/index.css">
@@ -25,17 +29,15 @@
       </div>
       <div class="body">
         <div class="top">
-            <div class="data-box">
-              <div class="state-info">Select a state:
-                <select id="selectButton"></select>
-                <div class="state-name"></div>
-                <div class="updated"></div>
-              </div>
-              <div id="data-section"></div>
+          <div class="data-box">
+            <div class="state-info">Select a state:
+              <select id="selectButton"></select>
+              <div class="state-name"></div>
+              <div class="updated"></div>
             </div>
-            <div class="table-box">
-            </div>
+            <div id="data-section"></div>
           </div>
+        </div>
           <div class="bottom">
             <div class="info-box">
               <h3>Information and Purpose</h3>
