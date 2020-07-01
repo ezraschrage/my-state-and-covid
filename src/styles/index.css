@@ -46,11 +46,9 @@ p {
 }
 
 .info-box {
-/* width: 20%; */
-box-shadow: 5px 10px 8px #888888;
-margin-left: 10px;
+    box-shadow: 5px 10px 8px #888888;
+    margin-left: 10px;
     border: 0.2px solid black;
-    
 }
 
 .bottom > div {
@@ -64,19 +62,17 @@ margin-left: 10px;
 }
 
 .links-box {
-    /* width: 20%; */
     box-shadow: 5px 10px 8px #888888;
     border: 0.2px solid black;
     margin-right: 10px;
 }
 
 .icon {
-    
-background-size: cover;
-  width: 60px;
-  height: 60px;
-  background-position: center;
-  background-repeat: no-repeat; 
+    background-size: cover;
+    width: 60px;
+    height: 60px;
+    background-position: center;
+    background-repeat: no-repeat; 
 }
 
 .xAxis {
