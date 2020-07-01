@@ -2,6 +2,8 @@
 ## Overview
 There is a large amount of data concerning the COVID-19 Pandemic, from death rates, to infection, to ICU admissions, and recoveries. Up-to-date data presented in number form can be difficult to process for the human brain. My State and COVID aims to create a visualization of this data that easy to parse, separated by state.
 
+### [Link to live site](http://ezraschrage.com/my-state-and-covid/)
+
 ![Screenshot](https://github.com/ezraschrage/my-state-and-covid/blob/master/src/images/example_graph.png)
 
 ## Functionality & MVP
