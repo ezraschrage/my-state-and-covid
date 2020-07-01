@@ -2,16 +2,14 @@
 ## Overview
 There is a large amount of data concerning the COVID-19 Pandemic, from death rates, to infection, to ICU admissions, and recoveries. Up-to-date data presented in number form can be difficult to process for the human brain. My State and COVID aims to create a visualization of this data that easy to parse, separated by state.
 
+![Screenshot](https://github.com/ezraschrage/my-state-and-covid/blob/master/src/images/example_graph.png)
+
 ## Functionality & MVP
 My State and COVID users will be able to:
 - Choose a state from the United States.
-- See a visualization of the number of tests and infections for that state.
-- Change categories to hospitalized, died, or ICU.
+- See a visualization of the number of tests, infections, hospitalizations, and deaths for that state.
 - Hover over the visualization to see raw numbers.
-
-In addition, this project will have
 - A link to the COVID Tracking Project with a short blurb on the work they do.
-- A modal pop-up that gives tips on slowing the spread of COVID.
 
 
 ## Wireframes
@@ -20,7 +18,7 @@ In addition, this project will have
 ## Architecture and Technology
 
 - JavaScript as the base language.
-- D3.js for visualizing data.
+- d3.js for visualizing data.
 - Webpack for bundling files together.
 
 ## Implementation Timeline
