@@ -256,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     .attr('class', 'hoverValue')
                     .attr("x", x(d.category) + x.bandwidth() / 4)
                     .attr("y", y(d.value) - 20)
-                    .text("hi")
+                    .text(d.value)
                     .style("cursor", "default")                    
             }
             
