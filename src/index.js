@@ -212,17 +212,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 .style("text-anchor", "end")
                 .attr('x', -8)
 
-            let bar = svg.selectAll("rect")
+            let bar = svg.selectAll(".bars")
                 .data(data)
 
             let text = svg.selectAll("text")
 
-            text.exit().remove()
+            let hoverArea = svg.selectAll(".hoverArea")
+                .data(data)
 
+            text.exit().remove()
+            hoverArea.exit().remove()
             bar.exit().remove()
-            
+
             bar.enter()
-            .append("rect")
+                .append("rect")
+                .attr("class", "bars")
                 .attr("y", function (d) { return y(0) })
                 .merge(bar)
                 .attr("x", function (d) { return x(d.category) })
@@ -232,31 +236,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 .attr("width", x.bandwidth())
                 .attr("height", function (d) { return height - y(d.value) })
                 .style("fill", "#69b3a2")
+
+            hoverArea.enter()
+                .append("rect")
+                .attr("class", "hoverArea")
+                .merge(hoverArea)
+                .attr("x", function (d) { return x(d.category) })
+                .attr("y", function (d) { return y((d.value)) * 0.95 })
+                .attr("width", x.bandwidth())
+                .attr("height", function (d) { return height - (y(d.value) - 50) })
+                .style("opacity", "0")
           
-            d3.selectAll("rect")
+            d3.selectAll(".hoverArea")
                 .on("mouseover", mouseEnter)
                 .on("mouseout", mouseLeave)
 
             function mouseEnter(d, i) {
                 svg.append('text')
-                    .attr('class', 'hoverVaule')
+                    .attr('class', 'hoverValue')
                     .attr("x", x(d.category) + x.bandwidth() / 4)
                     .attr("y", y(d.value) - 20)
-                    .text(d.value )
-                    .style("color", "#69b3a2")
-
-                // d3.select(this)
-                //     .attr('fill', "darkcyan")
-                //     .attr('r', 10)
-
+                    .text("hi")
+                    .style("cursor", "default")                    
             }
-
+            
+            
             function mouseLeave(d, i) {
-                d3.select('.hoverVaule').remove();
-                // d3.select(this)
-                //     .attr('fill', "darksalmon")
-                //     .attr('r', 6)
-
+                d3.select('.hoverValue').remove();
             } 
 
             
@@ -305,5 +311,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     }
-    selectState("Alaska")
+    selectState("Alabama")
 })
