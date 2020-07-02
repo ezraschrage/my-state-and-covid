@@ -4,7 +4,7 @@ There is a large amount of data concerning the COVID-19 Pandemic, from death rat
 
 ### [Link to live site](https://ezraschrage.com/my-state-and-covid/)
 
-![Screenshot](https://github.com/ezraschrage/my-state-and-covid/blob/master/src/images/example_graph.png)
+![Screenshot](https://github.com/ezraschrage/my-state-and-covid/blob/master/src/images/example.png)
 
 ## Functionality & MVP
 My State and COVID users will be able to:
