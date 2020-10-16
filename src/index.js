@@ -171,7 +171,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function selectState(selectedState) { 
 
-        d3.csv("https://covidtracking.com/api/v1/states/current.csv", function (rawData) {
+        d3.csv("https://api.covidtracking.com/v1/states/current.csv", function (rawData) {
+            
             let initials = stateNames[selectedState]
             let stateData = rawData[stateIndex[initials]]
            
